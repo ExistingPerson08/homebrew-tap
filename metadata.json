@@ -1,9 +1,0 @@
-{
-  "better-pkg": {
-    "long_description": "<p>Toto je delší popis pro další balíček. Můžete zde použít <strong>HTML tagy</strong> pro formátování.</p>",
-    "screenshots": [
-      "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftestsigma.com%2Fblog%2Fwp-content%2Fuploads%2FHow-to-create-a-test-plan-for-software-testing.jpg&f=1&nofb=1&ipt=309b048f0514147aea544371e60427c35283159bde66d35b2f9b3422d40f3d8a",
-      "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftestsigma.com%2Fblog%2Fwp-content%2Fuploads%2FHow-to-create-a-test-plan-for-software-testing.jpg&f=1&nofb=1&ipt=309b048f0514147aea544371e60427c35283159bde66d35b2f9b3422d40f3d8a"
-    ]
-  }
-}
