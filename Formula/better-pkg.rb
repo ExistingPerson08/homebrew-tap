@@ -8,6 +8,11 @@ class BetterPkg < Formula
 
   depends_on "python@3.12"
 
+  resource "requests" do
+    url "https://files.pythonhosted.org/packages/source/r/requests/requests-2.31.0.tar.gz"
+    sha256 "942c5a758fca5c2d2b9c8a7c9bc2f5bbdc9dd5a6a8b3f6bc2c5b1be1a5b5c7b0"
+  end
+  
   def install
     bin.install "better-pkg"
     pkgshare.install Dir["*"]
