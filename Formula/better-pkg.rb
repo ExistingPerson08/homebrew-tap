@@ -12,7 +12,7 @@ class BetterPkg < Formula
     url "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz"
     sha256 "dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf"
   end
-  
+
   def install
     bin.install "better-pkg"
     pkgshare.install Dir["*"]
