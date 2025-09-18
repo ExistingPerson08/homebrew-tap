@@ -9,8 +9,8 @@ class BetterPkg < Formula
   depends_on "python@3.12"
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/source/r/requests/requests-2.31.0.tar.gz"
-    sha256 "942c5a758fca5c2d2b9c8a7c9bc2f5bbdc9dd5a6a8b3f6bc2c5b1be1a5b5c7b0"
+    url "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz"
+    sha256 "dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf"
   end
   
   def install
