@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - website
   # Umožňuje ruční spuštění z panelu Actions
   workflow_dispatch:
 
