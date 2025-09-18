@@ -13,9 +13,10 @@ class BetterPkg < Formula
     sha256 "dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf"
   end
 
+  include Language::Python::Virtualenv
+
   def install
-    bin.install "better-pkg"
-    pkgshare.install Dir["*"]
+    virtualenv_install_with_resources
   end
 
   def zap
