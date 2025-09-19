@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glowing Brew</title>
+    <title>feedflow-linux | Glowing Brew</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
@@ -21,45 +21,145 @@
                 <p>Repository (tap) with Homebrew packages.</p>
             </header>
             <main>
-        <div class="prose">
-    <p>Glowing brew is a homebrew tap inspired by <a href="https://aur.archlinux.org" target="_blank">Aur</a>. It (will) contains my favorite apps, my projects and packages for <a href="https://github.com/ExistingPerson08/Spacefin" target="_blank">Spacefin</a>.
-    It should support both Linux and MacOS, but only Linux is tested and supported. To add this tap, run this command in your terminal:</p>
-    <div class="code-block-wrapper">
-        <pre><code>brew tap existingperson08/tap</code></pre>
-        <button>Copy</button>
-    </div>
-</div>
-        <div class="grid-layout">
-            <div>
-                <h2>All packages</h2>
-                <div class="search-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    <input type="search" id="search-input" placeholder="Search in name, description, date...">
+        <div style="max-width: 48rem; margin: 0 auto;">
+            <a href="../" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                Back&nbsp;to list
+            </a>
+            <div class="detail-card">
+                <h2>feedflow-linux</h2>
+                <p style="font-size: 1.125rem; color: var(--color-slate-400); margin-top: 0.25rem;">Desktop RSS reader client</p>
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="font-weight: 600; color: var(--color-white);">Instalace:</h3>
+                    <div class="code-block-wrapper"><pre><code>brew install --cask ExistingPerson08/homebrew-tap/feedflow-linux</code></pre><button>Kopírovat</button></div>
                 </div>
-                <div id="packages-output"><a href="./packages/1password-gui-linux.html" class="package-card" data-search-content="1password-gui-linux Password manager that keeps all passwords secure behind one password 19. 09. 2025">
-            <div class="package-card-header">
-                <h3>1password-gui-linux</h3>
-                <span class="package-card-date">19. 09. 2025</span>
+                <div class="tabs">
+                    <nav>
+                        <button class="active" data-tab="details">File content</button>
+                        <button data-tab="history">Change history</button>
+                    </nav>
+                </div>
+                <div id="tab-content-container">
+                    <div id="tab-details" class="tab-content">
+                        <div class="code-block-wrapper"><pre><code class="language-ruby">cask &quot;feedflow-linux&quot; do
+  # This cask is for Linux only.
+  on_linux do
+    version &quot;1.5.0&quot;
+    sha256 &quot;e57c67e2a0e6cd07cd4d7f2de01df691e309a528435c56990cd444e361c30f77&quot;
+
+    url &quot;https://github.com/prof18/feed-flow/releases/download/#{version}-all/feedflow_#{version}_amd64.deb&quot;
+    name &quot;FeedFlow&quot;
+    desc &quot;Desktop RSS reader client&quot;
+    homepage &quot;https://github.com/prof18/feed-flow/&quot;
+
+    livecheck do
+      url :url
+      strategy :github_latest do |json|
+        tag_name = json[&quot;tag_name&quot;]
+        match = tag_name&amp;.match(/^v?(\d+(?:\.\d+)+)-all$/i)
+        match&amp;.captures&amp;.first
+      end
+    end
+
+    auto_updates true
+    depends_on formula: &quot;dpkg&quot;
+    depends_on formula: &quot;desktop-file-utils&quot;
+
+    # We handle the extraction manually using `dpkg`.
+    container type: :naked
+
+    preflight do
+      dpkg_bin_path = Formula[&quot;dpkg&quot;].opt_bin
+      dpkg_executable = dpkg_bin_path/&quot;dpkg&quot;
+
+      system_command dpkg_executable,
+                     args: [&quot;-x&quot;, Dir[staged_path/&quot;*.deb&quot;].first, staged_path],
+                     env:  { &quot;PATH&quot; =&gt; &quot;#{dpkg_bin_path}:#{ENV.fetch(&quot;PATH&quot;, nil)}&quot; }
+    end
+
+    postflight do
+      binary_source = staged_path/&quot;opt/feedflow/bin/FeedFlow&quot;
+      desktop_file_source = staged_path/&quot;opt/feedflow/lib/feedflow-FeedFlow.desktop&quot;
+      icon_source = staged_path/&quot;opt/feedflow/lib/FeedFlow.png&quot;
+
+      odie &quot;Executable not found at &#x27;#{binary_source}&#x27;. Cask installation failed.&quot; unless binary_source.exist?
+
+      binary_target = HOMEBREW_PREFIX/&quot;bin/feedflow&quot;
+      ln_sf binary_source, binary_target
+
+      desktop_file_target = Pathname.new(File.expand_path(&quot;~/.local/share/applications/feedflow.desktop&quot;))
+      text = File.read(desktop_file_source)
+      new_contents = text.gsub(/^Exec=.*$/, &quot;Exec=#{binary_target}&quot;)
+                         .gsub(/^Icon=.*$/, &quot;Icon=feedflow&quot;)
+
+      mkdir_p desktop_file_target.dirname
+      File.write(desktop_file_target, new_contents)
+
+      icon_target_dir = Pathname.new(File.expand_path(&quot;~/.local/share/icons/hicolor/256x256/apps/&quot;))
+      mkdir_p icon_target_dir
+      cp icon_source, icon_target_dir/&quot;feedflow.png&quot;
+
+      system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_target.dirname]
+    end
+
+    uninstall_postflight do
+      desktop_file_path = Pathname.new(File.expand_path(&quot;~/.local/share/applications/feedflow.desktop&quot;))
+      icons = Pathname.glob(File.expand_path(&quot;~/.local/share/icons/**/feedflow.png&quot;))
+
+      rm HOMEBREW_PREFIX/&quot;bin/feedflow&quot;
+      rm desktop_file_path
+      rm icons
+
+      system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_path.dirname]
+    end
+
+    zap trash: [
+      &quot;~/.cache/FeedFlow&quot;,
+      &quot;~/.config/FeedFlow&quot;,
+      &quot;~/.local/share/FeedFlow&quot;,
+    ]
+  end
+end
+</code></pre><button>Kopírovat</button></div>
+                    </div>
+                    <div id="tab-history" class="tab-content" style="display: none;"><ul class="history-list"><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/ed12727f5e5514e7e6e7c05fc779b6e1dfb85f09" target="_blank">Get rid of rm_f</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
             </div>
-            <p>Password manager that keeps all passwords secure behind one password</p>
-        </a><a href="./packages/better-pkg.html" class="package-card" data-search-content="better-pkg Universal package manager wrapper 18. 09. 2025">
-            <div class="package-card-header">
-                <h3>better-pkg</h3>
-                <span class="package-card-date">18. 09. 2025</span>
+        </li><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/6e1fd4e765546bc6f8c3e33ec306cf1c97061a99" target="_blank">Fix syntax errors</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
             </div>
-            <p>Universal package manager wrapper</p>
-        </a><a href="./packages/feedflow-linux.html" class="package-card" data-search-content="feedflow-linux Desktop RSS reader client 19. 09. 2025">
-            <div class="package-card-header">
-                <h3>feedflow-linux</h3>
-                <span class="package-card-date">19. 09. 2025</span>
+        </li><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/05bf926a1010ce2e611b68d72ff43b94593de83d" target="_blank">Some minor improvments</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
             </div>
-            <p>Desktop RSS reader client</p>
-        </a></div>
-                <div id="empty-state" class="empty-state" style="display: none;">No packages found.</div>
+        </li><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/74439608e2d7b9eef5302307f1687efa6c680b60" target="_blank">Add Feedflow</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 2rem;">
-                <div class="sidebar-card"><h2>Recently updated</h2><ul><li><a href="./packages/feedflow-linux.html">feedflow-linux</a><span>19. 09. 2025</span></li><li><a href="./packages/1password-gui-linux.html">1password-gui-linux</a><span>19. 09. 2025</span></li><li><a href="./packages/better-pkg.html">better-pkg</a><span>18. 09. 2025</span></li></ul></div>
-                <div class="sidebar-card"><h2>Recently added</h2><ul><li><a href="./packages/feedflow-linux.html">feedflow-linux</a><span>19. 09. 2025</span></li><li><a href="./packages/1password-gui-linux.html">1password-gui-linux</a><span>19. 09. 2025</span></li><li><a href="./packages/better-pkg.html">better-pkg</a><span>18. 09. 2025</span></li></ul></div>
+        </li></ul></div>
+                </div>
             </div>
         </div>
     </main>
