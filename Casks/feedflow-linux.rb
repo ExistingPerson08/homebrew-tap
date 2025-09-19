@@ -12,9 +12,7 @@ cask "feedflow-linux" do
     livecheck do
       url :url
       strategy :github_latest do |json|
-        tag_name = json["tag_name"]
-        match = tag_name&.match(/^v?(\d+(?:\.\d+)+)-all$/i)
-        match&.captures&.first
+        json["tag_name"]&.match(/^v?(\d+(?:\.\d+)+)-all$/i)&.captures&.first
       end
     end
 
@@ -31,7 +29,7 @@ cask "feedflow-linux" do
 
       system_command dpkg_executable,
                      args: ["-x", Dir[staged_path/"*.deb"].first, staged_path],
-                     env:  { "PATH" => "#{dpkg_bin_path}:#{ENV.fetch("PATH", nil)}" }
+                     env:  { "PATH" => "#{dpkg_bin_path}:#{ENV["PATH"]}" }
     end
 
     postflight do
@@ -39,22 +37,24 @@ cask "feedflow-linux" do
       desktop_file_source = staged_path/"opt/feedflow/lib/feedflow-FeedFlow.desktop"
       icon_source = staged_path/"opt/feedflow/lib/FeedFlow.png"
 
-      odie "Executable not found at '#{binary_source}'. Cask installation failed." unless binary_source.exist?
+      unless binary_source.exist?
+        odie "Executable not found at '#{binary_source}'. Cask installation failed."
+      end
 
       binary_target = HOMEBREW_PREFIX/"bin/feedflow"
-      ln_sf binary_source, binary_target
+      FileUtils.ln_sf binary_source, binary_target
 
       desktop_file_target = Pathname.new(File.expand_path("~/.local/share/applications/feedflow.desktop"))
       text = File.read(desktop_file_source)
-      new_contents = text.gsub(/^Exec=.*$/, "Exec=#{binary_target}")
-                         .gsub(/^Icon=.*$/, "Icon=feedflow")
+      new_contents = text.gsub(%r{^Exec=.*$}, "Exec=#{binary_target}")
+                         .gsub(%r{^Icon=.*$}, "Icon=feedflow")
 
-      mkdir_p desktop_file_target.dirname
+      FileUtils.mkdir_p desktop_file_target.dirname
       File.write(desktop_file_target, new_contents)
 
       icon_target_dir = Pathname.new(File.expand_path("~/.local/share/icons/hicolor/256x256/apps/"))
-      mkdir_p icon_target_dir
-      cp icon_source, icon_target_dir/"feedflow.png"
+      FileUtils.mkdir_p icon_target_dir
+      FileUtils.cp icon_source, icon_target_dir/"feedflow.png"
 
       system_command "update-desktop-database", args: ["-q", desktop_file_target.dirname]
     end
@@ -63,16 +63,16 @@ cask "feedflow-linux" do
       desktop_file_path = Pathname.new(File.expand_path("~/.local/share/applications/feedflow.desktop"))
       icons = Pathname.glob(File.expand_path("~/.local/share/icons/**/feedflow.png"))
 
-      rm_f HOMEBREW_PREFIX/"bin/feedflow"
-      rm_f desktop_file_path
-      rm_f icons
+      FileUtils.rm_f HOMEBREW_PREFIX/"bin/feedflow"
+      FileUtils.rm_f desktop_file_path
+      FileUtils.rm_f icons
 
       system_command "update-desktop-database", args: ["-q", desktop_file_path.dirname]
     end
 
     zap trash: [
-      "~/.cache/FeedFlow",
       "~/.config/FeedFlow",
+      "~/.cache/FeedFlow",
       "~/.local/share/FeedFlow",
     ]
   end
