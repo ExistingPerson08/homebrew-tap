@@ -67,9 +67,9 @@ cask "feedflow-linux" do
       desktop_file_path = Pathname.new(File.expand_path("~/.local/share/applications/feedflow.desktop"))
       icons = Pathname.glob(File.expand_path("~/.local/share/icons/**/feedflow.png"))
 
-      FileUtils.rm_f HOMEBREW_PREFIX/"bin/feedflow"
-      FileUtils.rm_f desktop_file_path
-      icons.each { |icon| FileUtils.rm_f icon }
+      File.delete(HOMEBREW_PREFIX/"bin/feedflow") if (HOMEBREW_PREFIX/"bin/feedflow").exist?
+      File.delete(desktop_file_path) if desktop_file_path.exist?
+      icons.each { |icon| File.delete(icon) if icon.exist? }
 
       system_command "update-desktop-database", args: ["-q", desktop_file_path.dirname]
     end
