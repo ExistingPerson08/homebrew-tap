@@ -21,9 +21,7 @@ jobs:
       - name: Update formulas and casks
         run: |
           brew bump-formula-pr \
-            --token="${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}" \
             --all
 
           brew bump-cask-pr \
-            --token="${{ secrets.HOMEBREW_GITHUB_API_TOKEN }}" \
             --all
