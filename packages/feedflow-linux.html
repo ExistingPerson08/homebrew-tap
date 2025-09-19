@@ -110,7 +110,6 @@
       desktop_file_path = Pathname.new(File.expand_path(&quot;~/.local/share/applications/feedflow.desktop&quot;))
       icons = Pathname.glob(File.expand_path(&quot;~/.local/share/icons/**/feedflow.png&quot;))
 
-      # OPRAVA: použijte File.delete místo FileUtils.rm_f
       File.delete(HOMEBREW_PREFIX/&quot;bin/feedflow&quot;) if (HOMEBREW_PREFIX/&quot;bin/feedflow&quot;).exist?
       File.delete(desktop_file_path) if desktop_file_path.exist?
       icons.each { |icon| File.delete(icon) if icon.exist? }
@@ -131,7 +130,25 @@ end
             <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
             <div style="display: flex; justify-content: space-between; flex-grow: 1;">
                 <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/d456edf7baa3f61214fa96bd688e524b4c987915" target="_blank">Merge branch &#x27;main&#x27; into ExistingPerson08-patch-1</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
+            </div>
+        </li><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
                     <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/e1faafd81c73eff994537713bb55dcd463b77601" target="_blank">Fix syntax error</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
+            </div>
+        </li><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/f10107d31b26adef0ce2088a57a2b0b1dfa9f39d" target="_blank">Use fileutils instead of brew helepers</a></p>
                     <p class="history-author">od ExistingPerson</p>
                 </div>
                 <time class="history-date">19. 09. 2025</time>
