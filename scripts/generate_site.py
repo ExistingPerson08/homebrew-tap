@@ -5,29 +5,24 @@ from datetime import datetime
 import base64
 from html import escape
 
-# --- KONFIGURACE ---
-# Tyto hodnoty se načtou automaticky z prostředí GitHub Actions.
-# Pro lokální testování je můžete nastavit ručně.
 REPO_OWNER = os.environ.get('GITHUB_REPOSITORY_OWNER', 'ExistingPerson08')
 REPO_NAME = os.environ.get('GITHUB_REPOSITORY_NAME', 'homebrew-tap')
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
 
-# Konfigurace stránky (převzato z původního JS)
-SITE_NAME = "ExistingPerson08's Homebrew Tap"
-PAGE_DESCRIPTION = "Osobní repozitář (tap) s balíčky pro Homebrew."
+SITE_NAME = "Glowing Brew"
+PAGE_DESCRIPTION = "Repository (tap) with Homebrew packages."
 INTRO_TEXT = """
-    <p>Toto je můj Homebrew tap. Obsahuje moje oblíbené aplikace, moje projekty a balíčky pro <a href="https://github.com/ExistingPerson08/Spacefin" target="_blank">Spacefin</a>.
-    Tento tap je testovaný a podporovaný na Linuxu, ale měl by fungovat i na MacOS. Pro přidání zadejte do terminálu:</p>
+    <p>Glowing brew is a homebrew tap inspired by <a href="https://aur.archlinux.org" target="_blank">Aur</a>. It (will) contains my favorite apps, my projects and packages for <a href="https://github.com/ExistingPerson08/Spacefin" target="_blank">Spacefin</a>.
+    It should support both Linux and MacOS, but only Linux is tested and supported. To add this tap, run this command in your terminal:</p>
     <div class="code-block-wrapper">
         <pre><code>brew tap existingperson08/tap</code></pre>
-        <button>Kopírovat</button>
+        <button>Copy</button>
     </div>
 """
 FORMULA_DIR = 'Formula'
 LIST_LIMIT = 5
 OUTPUT_DIR = 'dist'
 
-# --- POMOCNÉ FUNKCE ---
 def make_api_request(url):
     """Odešle požadavek na GitHub API s autorizací."""
     headers = {'Accept': 'application/vnd.github.v3+json'}
@@ -50,7 +45,7 @@ def get_description_from_content(content):
                 return line.split('desc "')[1].split('"')[0]
             except IndexError:
                 continue
-    return 'Popis nebyl nalezen.'
+    return 'Description was not found.'
 
 # --- HTML ŠABLONY ---
 def get_base_template(title, content):
@@ -72,15 +67,14 @@ def get_base_template(title, content):
     <div class="container">
         <div class="main-content">
             <header>
-                <h1><a href="/{REPO_NAME}/">{escape(SITE_NAME)}</a></h1>
+                <h1><a href="https://github.com/ExistingPerson08/homebrew-tap/">{escape(SITE_NAME)}</a></h1>
                 <p>{escape(PAGE_DESCRIPTION)}</p>
             </header>
             <main>{content}</main>
-            <footer>Stránka generována pomocí Pythonu &hearts; CSS. Data získána z GitHub API.</footer>
+            <footer>Site generated using Python and Github Actions.</footer>
         </div>
     </div>
     <script>
-        // --- Interaktivní prvky, které zůstávají na klientovi ---
         document.addEventListener('DOMContentLoaded', () => {{
             // Zvýraznění syntaxe
             if (typeof hljs !== 'undefined') {{
@@ -166,14 +160,14 @@ def get_home_page_content(packages, recently_updated, recently_added):
                 <h2>Všechny balíčky</h2>
                 <div class="search-box">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    <input type="search" id="search-input" placeholder="Hledat v názvu, popisu, datu...">
+                    <input type="search" id="search-input" placeholder="Search in name, description, date...">
                 </div>
                 <div id="packages-output">{package_list_html}</div>
-                <div id="empty-state" class="empty-state" style="display: none;">Žádné balíčky neodpovídají hledání.</div>
+                <div id="empty-state" class="empty-state" style="display: none;">No packages found.</div>
             </div>
             <div style="display: flex; flex-direction: column; gap: 2rem;">
-                <div class="sidebar-card"><h2>Nedávno aktualizované</h2><ul>{updated_list_html}</ul></div>
-                <div class="sidebar-card"><h2>Nově přidané</h2><ul>{added_list_html}</ul></div>
+                <div class="sidebar-card"><h2>Recently updated</h2><ul>{updated_list_html}</ul></div>
+                <div class="sidebar-card"><h2>Recently added</h2><ul>{added_list_html}</ul></div>
             </div>
         </div>
     """
@@ -199,7 +193,7 @@ def get_detail_page_content(pkg):
         <div style="max-width: 48rem; margin: 0 auto;">
             <a href="../" class="back-link">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                Zpět na seznam
+                Back to list
             </a>
             <div class="detail-card">
                 <h2>{escape(pkg['name'])}</h2>
@@ -210,8 +204,8 @@ def get_detail_page_content(pkg):
                 </div>
                 <div class="tabs">
                     <nav>
-                        <button class="active" data-tab="details">Obsah souboru</button>
-                        <button data-tab="history">Historie změn</button>
+                        <button class="active" data-tab="details">File content</button>
+                        <button data-tab="history">Change history</button>
                     </nav>
                 </div>
                 <div id="tab-content-container">
