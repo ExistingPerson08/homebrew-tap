@@ -1,7 +1,7 @@
 class Bbrew < Formula
   desc "A simple TUI tool to make your homebrew bold."
   homepage "https://github.com/Valkyrie00/bold-brew"
-  version "#{version}"
+  version "1.8.0"
 
   on_macos do
     if Hardware::CPU.intel?
