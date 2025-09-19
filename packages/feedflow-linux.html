@@ -78,8 +78,6 @@
     end
 
     postflight do
-      require &quot;fileutils&quot;
-
       binary_source = staged_path/&quot;opt/feedflow/bin/FeedFlow&quot;
       desktop_file_source = staged_path/&quot;opt/feedflow/lib/feedflow-FeedFlow.desktop&quot;
       icon_source = staged_path/&quot;opt/feedflow/lib/FeedFlow.png&quot;
@@ -87,32 +85,30 @@
       odie &quot;Executable not found at &#x27;#{binary_source}&#x27;. Cask installation failed.&quot; unless binary_source.exist?
 
       binary_target = HOMEBREW_PREFIX/&quot;bin/feedflow&quot;
-      FileUtils.ln_sf binary_source, binary_target
+      ln_sf binary_source, binary_target
 
       desktop_file_target = Pathname.new(File.expand_path(&quot;~/.local/share/applications/feedflow.desktop&quot;))
       text = File.read(desktop_file_source)
       new_contents = text.gsub(/^Exec=.*$/, &quot;Exec=#{binary_target}&quot;)
                          .gsub(/^Icon=.*$/, &quot;Icon=feedflow&quot;)
 
-      FileUtils.mkdir_p desktop_file_target.dirname
+      mkdir_p desktop_file_target.dirname
       File.write(desktop_file_target, new_contents)
 
       icon_target_dir = Pathname.new(File.expand_path(&quot;~/.local/share/icons/hicolor/256x256/apps/&quot;))
-      FileUtils.mkdir_p icon_target_dir
-      FileUtils.cp icon_source, icon_target_dir/&quot;feedflow.png&quot;
+      mkdir_p icon_target_dir
+      cp icon_source, icon_target_dir/&quot;feedflow.png&quot;
 
       system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_target.dirname]
     end
 
     uninstall_postflight do
-      require &quot;fileutils&quot;
-
       desktop_file_path = Pathname.new(File.expand_path(&quot;~/.local/share/applications/feedflow.desktop&quot;))
       icons = Pathname.glob(File.expand_path(&quot;~/.local/share/icons/**/feedflow.png&quot;))
 
-      File.delete(HOMEBREW_PREFIX/&quot;bin/feedflow&quot;) if (HOMEBREW_PREFIX/&quot;bin/feedflow&quot;).exist?
-      File.delete(desktop_file_path) if desktop_file_path.exist?
-      icons.each { |icon| File.delete(icon) if icon.exist? }
+      rm_f HOMEBREW_PREFIX/&quot;bin/feedflow&quot;
+      rm_f desktop_file_path
+      rm_f icons
 
       system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_path.dirname]
     end
@@ -127,6 +123,15 @@ end
 </code></pre><button>Kopírovat</button></div>
                     </div>
                     <div id="tab-history" class="tab-content" style="display: none;"><ul class="history-list"><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/3a8bc24f041f96a39557964962216c79f8b1b5ab" target="_blank">Revert back to working version</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
+            </div>
+        </li><li class="history-item">
             <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
             <div style="display: flex; justify-content: space-between; flex-grow: 1;">
                 <div class="history-details">
