@@ -209,8 +209,8 @@ def get_detail_page_content(pkg):
                 <h2>{escape(pkg['name'])}</h2>
                 <p style="font-size: 1.125rem; color: var(--color-slate-400); margin-top: 0.25rem;">{escape(pkg['description'])}</p>
                 <div style="margin-top: 1.5rem;">
-                    <h3 style="font-weight: 600; color: var(--color-white);">Instalace:</h3>
-                    <div class="code-block-wrapper"><pre><code>{escape(install_command)}</code></pre><button>Kopírovat</button></div>
+                    <h3 style="font-weight: 600; color: var(--color-white);">Install:</h3>
+                    <div class="code-block-wrapper"><pre><code>{escape(install_command)}</code></pre><button>Copy</button></div>
                 </div>
                 <div class="tabs">
                     <nav>
@@ -220,7 +220,7 @@ def get_detail_page_content(pkg):
                 </div>
                 <div id="tab-content-container">
                     <div id="tab-details" class="tab-content">
-                        <div class="code-block-wrapper"><pre><code class="language-ruby">{escape(pkg['content'])}</code></pre><button>Kopírovat</button></div>
+                        <div class="code-block-wrapper"><pre><code class="language-ruby">{escape(pkg['content'])}</code></pre><button>Copy</button></div>
                     </div>
                     <div id="tab-history" class="tab-content" style="display: none;"><ul class="history-list">{history_html}</ul></div>
                 </div>
