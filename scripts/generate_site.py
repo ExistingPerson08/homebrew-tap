@@ -74,7 +74,7 @@ def get_base_template(title, content):
                 <p>{escape(PAGE_DESCRIPTION)}</p>
             </header>
             <main>{content}</main>
-            <footer>Site generated using Python and Github Actions.</footer>
+            <footer>Tap maintained by ExistingPerson08. Site generated using Python and Github Actions.</footer>
         </div>
     </div>
     <script>
@@ -89,8 +89,8 @@ def get_base_template(title, content):
                 if (e.target.matches('.code-block-wrapper button')) {{
                     const code = e.target.previousElementSibling.querySelector('code').innerText;
                     navigator.clipboard.writeText(code).then(() => {{
-                        e.target.innerText = 'Zkopírováno!';
-                        setTimeout(() => {{ e.target.innerText = 'Kopírovat'; }}, 2000);
+                        e.target.innerText = 'Copied!';
+                        setTimeout(() => {{ e.target.innerText = 'Copy'; }}, 2000);
                     }});
                 }}
             }});
