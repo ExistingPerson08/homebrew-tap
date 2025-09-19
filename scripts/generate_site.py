@@ -157,7 +157,7 @@ def get_home_page_content(packages, recently_updated, recently_added):
         <div class="prose">{INTRO_TEXT}</div>
         <div class="grid-layout">
             <div>
-                <h2>Všechny balíčky</h2>
+                <h2>All Packages</h2>
                 <div class="search-box">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     <input type="search" id="search-input" placeholder="Search in name, description, date...">
@@ -193,7 +193,7 @@ def get_detail_page_content(pkg):
         <div style="max-width: 48rem; margin: 0 auto;">
             <a href="../" class="back-link">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                Back to list
+                Back&nbsp;to list
             </a>
             <div class="detail-card">
                 <h2>{escape(pkg['name'])}</h2>
