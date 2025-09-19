@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glowing Brew</title>
+    <title>bbrew | Glowing Brew</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
@@ -21,51 +21,84 @@
                 <p>Repository (tap) with Homebrew packages.</p>
             </header>
             <main>
-        <div class="prose">
-    <p>Glowing brew is a homebrew tap inspired by <a href="https://aur.archlinux.org" target="_blank">Aur</a>. It (will) contains my favorite apps, my projects and packages for <a href="https://github.com/ExistingPerson08/Spacefin" target="_blank">Spacefin</a>.
-    It should support both Linux and MacOS, but only Linux is tested and supported. To add this tap, run this command in your terminal:</p>
-    <div class="code-block-wrapper">
-        <pre><code>brew tap existingperson08/tap</code></pre>
-        <button>Copy</button>
-    </div>
-</div>
-        <div class="grid-layout">
-            <div>
-                <h2>All packages</h2>
-                <div class="search-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    <input type="search" id="search-input" placeholder="Search in name, description, date...">
+        <div style="max-width: 48rem; margin: 0 auto;">
+            <a href="../" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                Back&nbsp;to list
+            </a>
+            <div class="detail-card">
+                <h2>bbrew</h2>
+                <p style="font-size: 1.125rem; color: var(--color-slate-400); margin-top: 0.25rem;">A simple TUI tool to make your homebrew bold.</p>
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="font-weight: 600; color: var(--color-white);">Instalace:</h3>
+                    <div class="code-block-wrapper"><pre><code>brew install ExistingPerson08/homebrew-tap/bbrew</code></pre><button>Kopírovat</button></div>
                 </div>
-                <div id="packages-output"><a href="./packages/1password-gui-linux.html" class="package-card" data-search-content="1password-gui-linux Password manager that keeps all passwords secure behind one password 19. 09. 2025">
-            <div class="package-card-header">
-                <h3>1password-gui-linux</h3>
-                <span class="package-card-date">19. 09. 2025</span>
+                <div class="tabs">
+                    <nav>
+                        <button class="active" data-tab="details">File content</button>
+                        <button data-tab="history">Change history</button>
+                    </nav>
+                </div>
+                <div id="tab-content-container">
+                    <div id="tab-details" class="tab-content">
+                        <div class="code-block-wrapper"><pre><code class="language-ruby">class Bbrew &lt; Formula
+  desc &quot;A simple TUI tool to make your homebrew bold.&quot;
+  homepage &quot;https://github.com/Valkyrie00/bold-brew&quot;
+  version &quot;#{version}&quot;
+
+  on_macos do
+    if Hardware::CPU.intel?
+      url &quot;https://github.com/Valkyrie00/bold-brew/releases/download/v#{version}/bbrew_#{version}_darwin_amd64.tar.gz&quot;
+      sha256 &quot;59504099c6815e92fe790fb7c5d87d1fc65b77e3be6f217d8af72e68e9526d81&quot;
+
+      def install
+        bin.install &quot;bbrew&quot;
+      end
+    end
+    if Hardware::CPU.arm?
+      url &quot;https://github.com/Valkyrie00/bold-brew/releases/download/v#{version}/bbrew_#{version}_darwin_arm64.tar.gz&quot;
+      sha256 &quot;98dd8a24ca7efc7019a8056f322c7c3e868d93fb35a39e5235f773853a765f63&quot;
+
+      def install
+        bin.install &quot;bbrew&quot;
+      end
+    end
+  end
+
+  on_linux do
+    if Hardware::CPU.intel? and Hardware::CPU.is_64_bit?
+      url &quot;https://github.com/Valkyrie00/bold-brew/releases/download/v#{version}/bbrew_#{version}_linux_amd64.tar.gz&quot;
+      sha256 &quot;a9c1ec72035a11e97e6e4d444be8f5db36196236ed964a66a44ee472a484a81f&quot;
+      def install
+        bin.install &quot;bbrew&quot;
+      end
+    end
+    if Hardware::CPU.arm? and Hardware::CPU.is_64_bit?
+      url &quot;https://github.com/Valkyrie00/bold-brew/releases/download/v#{version}/bbrew_#{version}_linux_arm64.tar.gz&quot;
+      sha256 &quot;284143d32290f02649dae97ae73d8ded35ed2c354a9e3c29c081648df508d78f&quot;
+      def install
+        bin.install &quot;bbrew&quot;
+      end
+    end
+  end
+
+  test do
+    system &quot;#{bin}/bbrew --version&quot;
+  end
+end
+</code></pre><button>Kopírovat</button></div>
+                    </div>
+                    <div id="tab-history" class="tab-content" style="display: none;"><ul class="history-list"><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/4320d0891a23546badb1a15ce6533f76a23d8f31" target="_blank">Add Bbrew</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
             </div>
-            <p>Password manager that keeps all passwords secure behind one password</p>
-        </a><a href="./packages/bbrew.html" class="package-card" data-search-content="bbrew A simple TUI tool to make your homebrew bold. 19. 09. 2025">
-            <div class="package-card-header">
-                <h3>bbrew</h3>
-                <span class="package-card-date">19. 09. 2025</span>
-            </div>
-            <p>A simple TUI tool to make your homebrew bold.</p>
-        </a><a href="./packages/better-pkg.html" class="package-card" data-search-content="better-pkg Universal package manager wrapper 18. 09. 2025">
-            <div class="package-card-header">
-                <h3>better-pkg</h3>
-                <span class="package-card-date">18. 09. 2025</span>
-            </div>
-            <p>Universal package manager wrapper</p>
-        </a><a href="./packages/feedflow-linux.html" class="package-card" data-search-content="feedflow-linux Desktop RSS reader client 19. 09. 2025">
-            <div class="package-card-header">
-                <h3>feedflow-linux</h3>
-                <span class="package-card-date">19. 09. 2025</span>
-            </div>
-            <p>Desktop RSS reader client</p>
-        </a></div>
-                <div id="empty-state" class="empty-state" style="display: none;">No packages found.</div>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 2rem;">
-                <div class="sidebar-card"><h2>Recently updated</h2><ul><li><a href="./packages/bbrew.html">bbrew</a><span>19. 09. 2025</span></li><li><a href="./packages/feedflow-linux.html">feedflow-linux</a><span>19. 09. 2025</span></li><li><a href="./packages/1password-gui-linux.html">1password-gui-linux</a><span>19. 09. 2025</span></li><li><a href="./packages/better-pkg.html">better-pkg</a><span>18. 09. 2025</span></li></ul></div>
-                <div class="sidebar-card"><h2>Recently added</h2><ul><li><a href="./packages/bbrew.html">bbrew</a><span>19. 09. 2025</span></li><li><a href="./packages/feedflow-linux.html">feedflow-linux</a><span>19. 09. 2025</span></li><li><a href="./packages/1password-gui-linux.html">1password-gui-linux</a><span>19. 09. 2025</span></li><li><a href="./packages/better-pkg.html">better-pkg</a><span>18. 09. 2025</span></li></ul></div>
+        </li></ul></div>
+                </div>
             </div>
         </div>
     </main>
