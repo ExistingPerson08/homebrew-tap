@@ -55,9 +55,7 @@
     livecheck do
       url :url
       strategy :github_latest do |json|
-        tag_name = json[&quot;tag_name&quot;]
-        match = tag_name&amp;.match(/^v?(\d+(?:\.\d+)+)-all$/i)
-        match&amp;.captures&amp;.first
+        json[&quot;tag_name&quot;]&amp;.match(/^v?(\d+(?:\.\d+)+)-all$/i)&amp;.captures&amp;.first
       end
     end
 
@@ -74,7 +72,7 @@
 
       system_command dpkg_executable,
                      args: [&quot;-x&quot;, Dir[staged_path/&quot;*.deb&quot;].first, staged_path],
-                     env:  { &quot;PATH&quot; =&gt; &quot;#{dpkg_bin_path}:#{ENV.fetch(&quot;PATH&quot;, nil)}&quot; }
+                     env:  { &quot;PATH&quot; =&gt; &quot;#{dpkg_bin_path}:#{ENV[&quot;PATH&quot;]}&quot; }
     end
 
     postflight do
@@ -82,22 +80,24 @@
       desktop_file_source = staged_path/&quot;opt/feedflow/lib/feedflow-FeedFlow.desktop&quot;
       icon_source = staged_path/&quot;opt/feedflow/lib/FeedFlow.png&quot;
 
-      odie &quot;Executable not found at &#x27;#{binary_source}&#x27;. Cask installation failed.&quot; unless binary_source.exist?
+      unless binary_source.exist?
+        odie &quot;Executable not found at &#x27;#{binary_source}&#x27;. Cask installation failed.&quot;
+      end
 
       binary_target = HOMEBREW_PREFIX/&quot;bin/feedflow&quot;
-      ln_sf binary_source, binary_target
+      FileUtils.ln_sf binary_source, binary_target
 
       desktop_file_target = Pathname.new(File.expand_path(&quot;~/.local/share/applications/feedflow.desktop&quot;))
       text = File.read(desktop_file_source)
-      new_contents = text.gsub(/^Exec=.*$/, &quot;Exec=#{binary_target}&quot;)
-                         .gsub(/^Icon=.*$/, &quot;Icon=feedflow&quot;)
+      new_contents = text.gsub(%r{^Exec=.*$}, &quot;Exec=#{binary_target}&quot;)
+                         .gsub(%r{^Icon=.*$}, &quot;Icon=feedflow&quot;)
 
-      mkdir_p desktop_file_target.dirname
+      FileUtils.mkdir_p desktop_file_target.dirname
       File.write(desktop_file_target, new_contents)
 
       icon_target_dir = Pathname.new(File.expand_path(&quot;~/.local/share/icons/hicolor/256x256/apps/&quot;))
-      mkdir_p icon_target_dir
-      cp icon_source, icon_target_dir/&quot;feedflow.png&quot;
+      FileUtils.mkdir_p icon_target_dir
+      FileUtils.cp icon_source, icon_target_dir/&quot;feedflow.png&quot;
 
       system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_target.dirname]
     end
@@ -106,16 +106,16 @@
       desktop_file_path = Pathname.new(File.expand_path(&quot;~/.local/share/applications/feedflow.desktop&quot;))
       icons = Pathname.glob(File.expand_path(&quot;~/.local/share/icons/**/feedflow.png&quot;))
 
-      rm_f HOMEBREW_PREFIX/&quot;bin/feedflow&quot;
-      rm_f desktop_file_path
-      rm_f icons
+      FileUtils.rm_f HOMEBREW_PREFIX/&quot;bin/feedflow&quot;
+      FileUtils.rm_f desktop_file_path
+      FileUtils.rm_f icons
 
       system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_path.dirname]
     end
 
     zap trash: [
-      &quot;~/.cache/FeedFlow&quot;,
       &quot;~/.config/FeedFlow&quot;,
+      &quot;~/.cache/FeedFlow&quot;,
       &quot;~/.local/share/FeedFlow&quot;,
     ]
   end
@@ -123,6 +123,15 @@ end
 </code></pre><button>Kopírovat</button></div>
                     </div>
                     <div id="tab-history" class="tab-content" style="display: none;"><ul class="history-list"><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/59da610fccf45884f345f5d1cf069e5e40969e87" target="_blank">Revert back to working version</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">19. 09. 2025</time>
+            </div>
+        </li><li class="history-item">
             <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
             <div style="display: flex; justify-content: space-between; flex-grow: 1;">
                 <div class="history-details">
