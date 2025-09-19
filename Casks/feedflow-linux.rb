@@ -35,6 +35,8 @@ cask "feedflow-linux" do
     end
 
     postflight do
+      require "fileutils"
+
       binary_source = staged_path/"opt/feedflow/bin/FeedFlow"
       desktop_file_source = staged_path/"opt/feedflow/lib/feedflow-FeedFlow.desktop"
       icon_source = staged_path/"opt/feedflow/lib/FeedFlow.png"
@@ -42,30 +44,32 @@ cask "feedflow-linux" do
       odie "Executable not found at '#{binary_source}'. Cask installation failed." unless binary_source.exist?
 
       binary_target = HOMEBREW_PREFIX/"bin/feedflow"
-      ln_sf binary_source, binary_target
+      FileUtils.ln_sf binary_source, binary_target
 
       desktop_file_target = Pathname.new(File.expand_path("~/.local/share/applications/feedflow.desktop"))
       text = File.read(desktop_file_source)
       new_contents = text.gsub(/^Exec=.*$/, "Exec=#{binary_target}")
                          .gsub(/^Icon=.*$/, "Icon=feedflow")
 
-      mkdir_p desktop_file_target.dirname
+      FileUtils.mkdir_p desktop_file_target.dirname
       File.write(desktop_file_target, new_contents)
 
       icon_target_dir = Pathname.new(File.expand_path("~/.local/share/icons/hicolor/256x256/apps/"))
-      mkdir_p icon_target_dir
-      cp icon_source, icon_target_dir/"feedflow.png"
+      FileUtils.mkdir_p icon_target_dir
+      FileUtils.cp icon_source, icon_target_dir/"feedflow.png"
 
       system_command "update-desktop-database", args: ["-q", desktop_file_target.dirname]
     end
 
     uninstall_postflight do
+      require "fileutils"
+
       desktop_file_path = Pathname.new(File.expand_path("~/.local/share/applications/feedflow.desktop"))
       icons = Pathname.glob(File.expand_path("~/.local/share/icons/**/feedflow.png"))
 
-      rm HOMEBREW_PREFIX/"bin/feedflow"
-      rm desktop_file_path
-      rm icons
+      FileUtils.rm_f HOMEBREW_PREFIX/"bin/feedflow"
+      FileUtils.rm_f desktop_file_path
+      icons.each { |icon| FileUtils.rm_f icon }
 
       system_command "update-desktop-database", args: ["-q", desktop_file_path.dirname]
     end
