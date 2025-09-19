@@ -20,6 +20,6 @@ jobs:
 
       - name: Update formulas and casks
         run: |
-          brew bump-formula-pr
+          brew bump-formula-pr all
 
           brew bump-cask-pr
