@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ExistingPerson08&#x27;s Homebrew Tap</title>
+    <title>Glowing Brew</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
@@ -16,16 +16,16 @@
     <div class="container">
         <div class="main-content">
             <header>
-                <h1><a href="/homebrew-tap/">ExistingPerson08&#x27;s Homebrew Tap</a></h1>
-                <p>Osobní repozitář (tap) s balíčky pro Homebrew.</p>
+                <h1><a href="https://github.com/ExistingPerson08/homebrew-tap/">Glowing Brew</a></h1>
+                <p>Repository (tap) with Homebrew packages.</p>
             </header>
             <main>
         <div class="prose">
-    <p>Toto je můj Homebrew tap. Obsahuje moje oblíbené aplikace, moje projekty a balíčky pro <a href="https://github.com/ExistingPerson08/Spacefin" target="_blank">Spacefin</a>.
-    Tento tap je testovaný a podporovaný na Linuxu, ale měl by fungovat i na MacOS. Pro přidání zadejte do terminálu:</p>
+    <p>Glowing brew is a homebrew tap inspired by <a href="https://aur.archlinux.org" target="_blank">Aur</a>. It (will) contains my favorite apps, my projects and packages for <a href="https://github.com/ExistingPerson08/Spacefin" target="_blank">Spacefin</a>.
+    It should support both Linux and MacOS, but only Linux is tested and supported. To add this tap, run this command in your terminal:</p>
     <div class="code-block-wrapper">
         <pre><code>brew tap existingperson08/tap</code></pre>
-        <button>Kopírovat</button>
+        <button>Copy</button>
     </div>
 </div>
         <div class="grid-layout">
@@ -33,7 +33,7 @@
                 <h2>Všechny balíčky</h2>
                 <div class="search-box">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    <input type="search" id="search-input" placeholder="Hledat v názvu, popisu, datu...">
+                    <input type="search" id="search-input" placeholder="Search in name, description, date...">
                 </div>
                 <div id="packages-output"><a href="./packages/better-pkg.html" class="package-card" data-search-content="better-pkg Universal package manager wrapper 18. 09. 2025">
             <div class="package-card-header">
@@ -42,19 +42,18 @@
             </div>
             <p>Universal package manager wrapper</p>
         </a></div>
-                <div id="empty-state" class="empty-state" style="display: none;">Žádné balíčky neodpovídají hledání.</div>
+                <div id="empty-state" class="empty-state" style="display: none;">No packages found.</div>
             </div>
             <div style="display: flex; flex-direction: column; gap: 2rem;">
-                <div class="sidebar-card"><h2>Nedávno aktualizované</h2><ul><li><a href="./packages/better-pkg.html">better-pkg</a><span>18. 09. 2025</span></li></ul></div>
-                <div class="sidebar-card"><h2>Nově přidané</h2><ul><li><a href="./packages/better-pkg.html">better-pkg</a><span>18. 09. 2025</span></li></ul></div>
+                <div class="sidebar-card"><h2>Recently updated</h2><ul><li><a href="./packages/better-pkg.html">better-pkg</a><span>18. 09. 2025</span></li></ul></div>
+                <div class="sidebar-card"><h2>Recently added</h2><ul><li><a href="./packages/better-pkg.html">better-pkg</a><span>18. 09. 2025</span></li></ul></div>
             </div>
         </div>
     </main>
-            <footer>Stránka generována pomocí Pythonu &hearts; CSS. Data získána z GitHub API.</footer>
+            <footer>Site generated using Python and Github Actions.</footer>
         </div>
     </div>
     <script>
-        // --- Interaktivní prvky, které zůstávají na klientovi ---
         document.addEventListener('DOMContentLoaded', () => {
             // Zvýraznění syntaxe
             if (typeof hljs !== 'undefined') {
