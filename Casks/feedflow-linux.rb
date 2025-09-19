@@ -63,9 +63,9 @@ cask "feedflow-linux" do
       desktop_file_path = Pathname.new(File.expand_path("~/.local/share/applications/feedflow.desktop"))
       icons = Pathname.glob(File.expand_path("~/.local/share/icons/**/feedflow.png"))
 
-      rm_f HOMEBREW_PREFIX/"bin/feedflow"
-      rm_f desktop_file_path
-      rm_f icons
+      rm HOMEBREW_PREFIX/"bin/feedflow"
+      rm desktop_file_path
+      rm icons
 
       system_command "update-desktop-database", args: ["-q", desktop_file_path.dirname]
     end
