@@ -29,7 +29,7 @@ cask "feedflow-linux" do
 
       system_command dpkg_executable,
                      args: ["-x", Dir[staged_path/"*.deb"].first, staged_path],
-                     env:  { "PATH" => "#{dpkg_bin_path}:#{ENV["PATH"]}" }
+                     env:  { "PATH" => "#{dpkg_bin_path}:#{ENV.fetch("PATH", nil)}" }
     end
 
     postflight do
@@ -71,8 +71,8 @@ cask "feedflow-linux" do
     end
 
     zap trash: [
-      "~/.config/FeedFlow",
       "~/.cache/FeedFlow",
+      "~/.config/FeedFlow",
       "~/.local/share/FeedFlow",
     ]
   end
