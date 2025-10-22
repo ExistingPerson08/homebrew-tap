@@ -24,13 +24,13 @@ cask "feedflow-linux" do
     container type: :naked
 
     preflight do
-      dpkg_bin_path = Formula["dpkg"].opt_bin
-      dpkg_executable = dpkg_bin_path/"dpkg"
+      dpkg_bin_path = Formula["dpkg"].opt_bin
+      dpkg_executable = dpkg_bin_path/"dpkg"
 
-      system_command dpkg_executable,
-                     args: ["-x", Dir[staged_path/"*.deb"].first, staged_path],
-                     env:  { "PATH" => "#{dpkg_bin_path}:#{ENV["PATH"]}" }
-    end
+      system_command dpkg_executable.to_s,
+                     args: ["-x", Dir[staged_path/"*.deb"].first, staged_path],
+                     env:  { "PATH" => "#{dpkg_bin_path}:#{ENV["PATH"]}" }
+    end
 
     postflight do
       binary_source = staged_path/"opt/feedflow/bin/FeedFlow"
