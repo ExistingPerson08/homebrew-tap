@@ -67,13 +67,13 @@
     container type: :naked
 
     preflight do
-      dpkg_bin_path = Formula[&quot;dpkg&quot;].opt_bin
-      dpkg_executable = dpkg_bin_path/&quot;dpkg&quot;
+      dpkg_bin_path = Formula[&quot;dpkg&quot;].opt_bin
+      dpkg_executable = dpkg_bin_path/&quot;dpkg&quot;
 
-      system_command dpkg_executable,
-                     args: [&quot;-x&quot;, Dir[staged_path/&quot;*.deb&quot;].first, staged_path],
-                     env:  { &quot;PATH&quot; =&gt; &quot;#{dpkg_bin_path}:#{ENV[&quot;PATH&quot;]}&quot; }
-    end
+      system_command dpkg_executable.to_s,
+                     args: [&quot;-x&quot;, Dir[staged_path/&quot;*.deb&quot;].first, staged_path],
+                     env:  { &quot;PATH&quot; =&gt; &quot;#{dpkg_bin_path}:#{ENV[&quot;PATH&quot;]}&quot; }
+    end
 
     postflight do
       binary_source = staged_path/&quot;opt/feedflow/bin/FeedFlow&quot;
@@ -123,6 +123,15 @@ end
 </code></pre><button>Copy</button></div>
                     </div>
                     <div id="tab-history" class="tab-content" style="display: none;"><ul class="history-list"><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/001646ff31e9711feb2c04c65672ffe9e9df0569" target="_blank">Fix installation error</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">22. 10. 2025</time>
+            </div>
+        </li><li class="history-item">
             <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
             <div style="display: flex; justify-content: space-between; flex-grow: 1;">
                 <div class="history-details">
