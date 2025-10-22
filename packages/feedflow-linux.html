@@ -67,13 +67,15 @@
     container type: :naked
 
     preflight do
-      dpkg_bin_path = Formula[&quot;dpkg&quot;].opt_bin
-      dpkg_executable = dpkg_bin_path/&quot;dpkg&quot;
+      dpkg_bin_path = Formula[&quot;dpkg&quot;].opt_bin
+      dpkg_executable = dpkg_bin_path/&quot;dpkg&quot;
 
-      system_command dpkg_executable.to_s,
-                     args: [&quot;-x&quot;, Dir[staged_path/&quot;*.deb&quot;].first, staged_path],
-                     env:  { &quot;PATH&quot; =&gt; &quot;#{dpkg_bin_path}:#{ENV[&quot;PATH&quot;]}&quot; }
-    end
+      # OPRAVA 1: Přidáno .to_s k dpkg_executable
+      # OPRAVA 2: Opravena neviditelná mezera za `env:`
+      system_command dpkg_executable.to_s,
+                     args: [&quot;-x&quot;, Dir[staged_path/&quot;*.deb&quot;].first, staged_path],
+                     env:  { &quot;PATH&quot; =&gt; &quot;#{dpkg_bin_path}:#{ENV[&quot;PATH&quot;]}&quot; }
+    end
 
     postflight do
       binary_source = staged_path/&quot;opt/feedflow/bin/FeedFlow&quot;
@@ -99,7 +101,8 @@
       FileUtils.mkdir_p icon_target_dir
       FileUtils.cp icon_source, icon_target_dir/&quot;feedflow.png&quot;
 
-      system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_target.dirname]
+      # OPRAVA 3: Přidáno .to_s k argumentu, který je Pathname
+      system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_target.dirname.to_s]
     end
 
     uninstall_postflight do
@@ -110,7 +113,8 @@
       FileUtils.rm_f desktop_file_path
       FileUtils.rm_f icons
 
-      system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_path.dirname]
+      # OPRAVA 4: Přidáno .to_s k argumentu, který je Pathname
+      system_command &quot;update-desktop-database&quot;, args: [&quot;-q&quot;, desktop_file_path.dirname.to_s]
     end
 
     zap trash: [
@@ -123,6 +127,15 @@ end
 </code></pre><button>Copy</button></div>
                     </div>
                     <div id="tab-history" class="tab-content" style="display: none;"><ul class="history-list"><li class="history-item">
+            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
+            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
+                <div class="history-details">
+                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/a1d5e539964a5f03c4403ced3b166847e9cf1654" target="_blank">Fix formating</a></p>
+                    <p class="history-author">od ExistingPerson</p>
+                </div>
+                <time class="history-date">22. 10. 2025</time>
+            </div>
+        </li><li class="history-item">
             <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
             <div style="display: flex; justify-content: space-between; flex-grow: 1;">
                 <div class="history-details">
@@ -199,15 +212,6 @@ end
             <div style="display: flex; justify-content: space-between; flex-grow: 1;">
                 <div class="history-details">
                     <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/05bf926a1010ce2e611b68d72ff43b94593de83d" target="_blank">Some minor improvments</a></p>
-                    <p class="history-author">od ExistingPerson</p>
-                </div>
-                <time class="history-date">19. 09. 2025</time>
-            </div>
-        </li><li class="history-item">
-            <div class="history-icon"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg></div>
-            <div style="display: flex; justify-content: space-between; flex-grow: 1;">
-                <div class="history-details">
-                    <p class="history-message"><a href="https://github.com/ExistingPerson08/homebrew-tap/commit/74439608e2d7b9eef5302307f1687efa6c680b60" target="_blank">Add Feedflow</a></p>
                     <p class="history-author">od ExistingPerson</p>
                 </div>
                 <time class="history-date">19. 09. 2025</time>
