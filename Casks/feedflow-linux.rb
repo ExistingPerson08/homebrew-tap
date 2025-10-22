@@ -24,13 +24,15 @@ cask "feedflow-linux" do
     container type: :naked
 
     preflight do
-      dpkg_bin_path = Formula["dpkg"].opt_bin
-      dpkg_executable = dpkg_bin_path/"dpkg"
+      dpkg_bin_path = Formula["dpkg"].opt_bin
+      dpkg_executable = dpkg_bin_path/"dpkg"
 
-      system_command dpkg_executable.to_s,
-                     args: ["-x", Dir[staged_path/"*.deb"].first, staged_path],
-                     env:  { "PATH" => "#{dpkg_bin_path}:#{ENV["PATH"]}" }
-    end
+      # OPRAVA 1: Přidáno .to_s k dpkg_executable
+      # OPRAVA 2: Opravena neviditelná mezera za `env:`
+      system_command dpkg_executable.to_s,
+                     args: ["-x", Dir[staged_path/"*.deb"].first, staged_path],
+                     env:  { "PATH" => "#{dpkg_bin_path}:#{ENV["PATH"]}" }
+    end
 
     postflight do
       binary_source = staged_path/"opt/feedflow/bin/FeedFlow"
@@ -56,7 +58,8 @@ cask "feedflow-linux" do
       FileUtils.mkdir_p icon_target_dir
       FileUtils.cp icon_source, icon_target_dir/"feedflow.png"
 
-      system_command "update-desktop-database", args: ["-q", desktop_file_target.dirname]
+      # OPRAVA 3: Přidáno .to_s k argumentu, který je Pathname
+      system_command "update-desktop-database", args: ["-q", desktop_file_target.dirname.to_s]
     end
 
     uninstall_postflight do
@@ -67,7 +70,8 @@ cask "feedflow-linux" do
       FileUtils.rm_f desktop_file_path
       FileUtils.rm_f icons
 
-      system_command "update-desktop-database", args: ["-q", desktop_file_path.dirname]
+      # OPRAVA 4: Přidáno .to_s k argumentu, který je Pathname
+      system_command "update-desktop-database", args: ["-q", desktop_file_path.dirname.to_s]
     end
 
     zap trash: [
